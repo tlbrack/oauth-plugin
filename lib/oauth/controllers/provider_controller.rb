@@ -152,7 +152,9 @@ module OAuth
           oauth2_error
           return
         end
-        @token = Oauth2Token.create :client_application=>@client_application, :user=>@user, :scope=>params[:scope]
+        #@token = Oauth2Token.create :client_application=>@client_application, :user=>@user, :scope=>params[:scope]
+        #find or create allows reuse of existing tokens
+        @token = Oauth2Token.find_or_create_by_client_application_id_and_user_id_and_scope(@client_application.id, @user.id, params[:scope])
         render :json=>@token
       end
 
